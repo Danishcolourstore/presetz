@@ -3,135 +3,792 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRESETZ • H.O.T.C Colours</title>
+    <meta name="description" content="Presetz — Premium Lightroom presets and color systems for South Indian wedding photography. Part of the Colour Store ecosystem.">
+    <title>Presetz — South Indian Wedding Colour Systems</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
-        
+        :root {
+            --cream: #faf8f5;
+            --warm-white: #fffefb;
+            --charcoal: #1a1a1a;
+            --gold: #c5a46e;
+            --gold-light: #d4b88a;
+            --muted: #8a8580;
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            font-feature-settings: "tnum";
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--warm-white);
+            color: var(--charcoal);
+            -webkit-font-smoothing: antialiased;
         }
 
-        .gt-style {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            letter-spacing: -0.01em;
-            font-weight: 500;
+        .font-display {
+            font-family: 'Cormorant Garamond', Georgia, serif;
         }
 
-        .big-image {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            object-fit: cover;
-            border-radius: 12px;
+        /* Nav */
+        .nav-bar {
+            transition: background 0.4s ease, box-shadow 0.4s ease, padding 0.4s ease;
         }
 
-        .image-label {
-            position: absolute;
-            top: 16px;
-            padding: 4px 14px;
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            border-radius: 9999px;
+        .nav-bar.scrolled {
+            background: rgba(255, 254, 251, 0.95);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.06);
         }
 
-        .before-label {
-            left: 16px;
-            background: #111827;
+        .nav-bar.hero-nav {
+            background: transparent;
+        }
+
+        .nav-bar.hero-nav .nav-link {
+            color: rgba(255,255,255,0.9);
+        }
+
+        .nav-bar.hero-nav .nav-logo {
             color: white;
         }
 
-        .after-label {
-            right: 16px;
-            background: #c5a46e;
-            color: #111827;
+        .nav-bar.hero-nav.scrolled .nav-link,
+        .nav-bar.hero-nav.scrolled .nav-logo {
+            color: var(--charcoal);
         }
 
-        .pair {
-            margin-bottom: 4rem;
+        /* Hero */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            transform: scale(1.05);
+            transition: transform 8s ease-out;
+        }
+
+        .hero:hover .hero-bg {
+            transform: scale(1);
+        }
+
+        .hero-overlay {
+            background: linear-gradient(
+                to bottom,
+                rgba(0,0,0,0.15) 0%,
+                rgba(0,0,0,0.05) 40%,
+                rgba(0,0,0,0.45) 100%
+            );
+        }
+
+        /* Fade-in animations */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
+        .stagger-4 { transition-delay: 0.4s; }
+
+        /* Gallery cards */
+        .gallery-card {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .gallery-card img {
+            transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .gallery-card:hover img {
+            transform: scale(1.06);
+        }
+
+        .gallery-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-card:hover .gallery-card-overlay {
+            opacity: 1;
+        }
+
+        .gallery-card-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            transform: translateY(12px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .gallery-card:hover .gallery-card-info {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Before/After slider */
+        .ba-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 2px;
+            cursor: col-resize;
+            user-select: none;
+        }
+
+        .ba-after {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .ba-after img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: auto;
+            max-width: none;
+            object-fit: cover;
+        }
+
+        .ba-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: white;
+            transform: translateX(-50%);
+            z-index: 10;
+            box-shadow: 0 0 12px rgba(0,0,0,0.3);
+        }
+
+        .ba-handle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ba-handle-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 11;
+            color: var(--charcoal);
+            font-size: 14px;
+            pointer-events: none;
+            display: flex;
+            gap: 2px;
+        }
+
+        .ba-label {
+            position: absolute;
+            top: 16px;
+            padding: 5px 14px;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            border-radius: 2px;
+            z-index: 5;
+        }
+
+        .ba-label-before {
+            left: 16px;
+            background: rgba(26,26,26,0.85);
+            color: white;
+        }
+
+        .ba-label-after {
+            right: 16px;
+            background: var(--gold);
+            color: var(--charcoal);
+        }
+
+        /* Masonry-style grid */
+        .masonry {
+            columns: 2;
+            column-gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .masonry { columns: 3; column-gap: 1.25rem; }
+        }
+
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 2px;
+        }
+
+        .masonry-item img {
+            width: 100%;
+            display: block;
+            transition: transform 0.6s ease, opacity 0.3s ease;
+        }
+
+        .masonry-item:hover img {
+            transform: scale(1.03);
+            opacity: 0.92;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: rgba(0,0,0,0.94);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox img {
+            max-width: 92vw;
+            max-height: 90vh;
+            object-fit: contain;
+            transform: scale(0.95);
+            transition: transform 0.35s ease;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+            background: none;
+            border: none;
+            line-height: 1;
+        }
+
+        .lightbox-close:hover { opacity: 1; }
+
+        /* Mobile menu */
+        .mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .mobile-menu.open {
+            transform: translateX(0);
+        }
+
+        /* Section divider */
+        .section-label {
+            letter-spacing: 3px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        /* Pack tabs */
+        .pack-tab {
+            transition: color 0.2s, border-color 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        .pack-tab.active {
+            color: var(--charcoal);
+            border-bottom-color: var(--gold);
+        }
+
+        .pack-panel { display: none; }
+        .pack-panel.active { display: block; }
+
+        /* Scroll indicator */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(6px); }
+        }
+
+        .scroll-indicator {
+            animation: bounce 2s ease infinite;
         }
     </style>
 </head>
-<body class="bg-white text-zinc-900">
-    <!-- Ultra Minimal Nav -->
-    <nav class="border-b border-zinc-100 py-6">
-        <div class="max-w-5xl mx-auto px-6 flex items-center justify-between">
-            <div class="flex items-center gap-x-2">
-                <span class="font-semibold tracking-[2px] text-lg">PRESETZ</span>
-                <span class="text-xs px-2 py-0.5 rounded bg-amber-100 text-amber-600">H.O.T.C</span>
+<body>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="nav-bar hero-nav fixed top-0 left-0 right-0 z-50 py-5">
+        <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
+            <a href="#" class="nav-logo font-display text-2xl font-medium tracking-wide">Presetz</a>
+
+            <div class="hidden md:flex items-center gap-10">
+                <a href="#collections" class="nav-link text-xs tracking-[2px] font-medium hover:opacity-70 transition-opacity">COLLECTIONS</a>
+                <a href="#before-after" class="nav-link text-xs tracking-[2px] font-medium hover:opacity-70 transition-opacity">BEFORE & AFTER</a>
+                <a href="#gallery" class="nav-link text-xs tracking-[2px] font-medium hover:opacity-70 transition-opacity">GALLERY</a>
+                <a href="#about" class="nav-link text-xs tracking-[2px] font-medium hover:opacity-70 transition-opacity">ABOUT</a>
+                <a href="https://www.colourstorepresets.com" target="_blank" rel="noopener"
+                   class="text-xs tracking-[2px] font-medium px-5 py-2.5 bg-[var(--gold)] text-[var(--charcoal)] hover:bg-[var(--gold-light)] transition-colors">
+                    SHOP
+                </a>
             </div>
-            <a href="https://www.colourstorepresets.com" target="_blank" class="text-xs tracking-widest hover:text-amber-600 transition-colors">COLOUR STORE</a>
+
+            <button id="menuBtn" class="md:hidden nav-link text-2xl leading-none" aria-label="Open menu">☰</button>
         </div>
     </nav>
 
-    <!-- Minimal Header -->
-    <div class="max-w-5xl mx-auto px-6 pt-12 pb-8 text-center">
-        <h1 class="gt-style text-5xl md:text-6xl tracking-[-1.5px] font-semibold">H.O.T.C Colours</h1>
-        <p class="mt-2 text-sm text-zinc-500 tracking-[1px]">BEFORE & AFTER</p>
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="mobile-menu fixed inset-0 z-[60] bg-[var(--warm-white)] flex flex-col items-center justify-center gap-8 md:hidden">
+        <button id="menuClose" class="absolute top-6 right-6 text-3xl" aria-label="Close menu">×</button>
+        <a href="#collections" class="mobile-link font-display text-3xl">Collections</a>
+        <a href="#before-after" class="mobile-link font-display text-3xl">Before & After</a>
+        <a href="#gallery" class="mobile-link font-display text-3xl">Gallery</a>
+        <a href="#about" class="mobile-link font-display text-3xl">About</a>
+        <a href="https://www.colourstorepresets.com" target="_blank" rel="noopener"
+           class="text-xs tracking-[2px] font-medium px-8 py-3 bg-[var(--gold)] text-[var(--charcoal)]">
+            SHOP COLOUR STORE
+        </a>
     </div>
 
-    <!-- Big Image Gallery -->
-    <div class="max-w-5xl mx-auto px-6 pb-16">
+    <!-- Hero -->
+    <section class="hero relative flex items-end">
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1920&q=80');"></div>
+        <div class="hero-overlay absolute inset-0"></div>
 
-        <!-- Pack 1 -->
-        <div class="pair">
-            <div class="mb-3 flex items-center justify-between">
-                <span class="gt-style text-sm tracking-[1px] text-zinc-400">CHEE TAH SIGNATURE</span>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/1005/1200/750" alt="Before" class="big-image border border-zinc-200">
-                    <div class="image-label before-label">BEFORE</div>
-                </div>
-                <div class="relative">
-                    <img src="https://picsum.photos/id/1011/1200/750" alt="After" class="big-image border border-zinc-200">
-                    <div class="image-label after-label">AFTER</div>
-                </div>
+        <div class="relative z-10 w-full max-w-6xl mx-auto px-6 pb-20 md:pb-28">
+            <p class="text-white/80 text-xs tracking-[3px] font-medium mb-4 fade-up">SOUTH INDIAN WEDDING PHOTOGRAPHY</p>
+            <h1 class="font-display text-white text-5xl md:text-7xl lg:text-8xl font-medium leading-[1.05] tracking-tight fade-up stagger-1">
+                Colour systems<br><em class="font-normal italic">crafted for tradition</em>
+            </h1>
+            <p class="mt-6 text-white/75 text-sm md:text-base max-w-md leading-relaxed fade-up stagger-2">
+                Premium Lightroom presets and H.O.T.C colour tools — designed for the warmth, richness, and elegance of South Indian celebrations.
+            </p>
+            <div class="mt-10 flex flex-wrap gap-4 fade-up stagger-3">
+                <a href="#collections"
+                   class="inline-block text-xs tracking-[2px] font-medium px-8 py-3.5 bg-white text-[var(--charcoal)] hover:bg-white/90 transition-colors">
+                    VIEW COLLECTIONS
+                </a>
+                <a href="https://www.colourstorepresets.com" target="_blank" rel="noopener"
+                   class="inline-block text-xs tracking-[2px] font-medium px-8 py-3.5 border border-white/50 text-white hover:bg-white/10 transition-colors">
+                    VISIT COLOUR STORE
+                </a>
             </div>
         </div>
 
-        <!-- Pack 2 -->
-        <div class="pair">
-            <div class="mb-3 flex items-center justify-between">
-                <span class="gt-style text-sm tracking-[1px] text-zinc-400">TEMPLE HERITAGE</span>
+        <a href="#collections" class="absolute bottom-8 left-1/2 -translate-x-1/2 scroll-indicator text-white/60 hover:text-white transition-colors" aria-label="Scroll down">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </a>
+    </section>
+
+    <!-- Collections -->
+    <section id="collections" class="py-24 md:py-32 bg-[var(--cream)]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-up">
+                <p class="section-label mb-3">Preset Collections</p>
+                <h2 class="font-display text-4xl md:text-5xl font-medium">H.O.T.C Colour Packs</h2>
+                <p class="mt-4 text-[var(--muted)] text-sm max-w-lg mx-auto leading-relaxed">
+                    Curated preset systems for every moment — from temple ceremonies to reception glamour.
+                </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/1009/1200/750" alt="Before" class="big-image border border-zinc-200">
-                    <div class="image-label before-label">BEFORE</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+                <div class="gallery-card aspect-[4/5] fade-up stagger-1" data-lightbox="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80" alt="Chee Tah Signature preset" class="w-full h-full object-cover">
+                    <div class="gallery-card-overlay"></div>
+                    <div class="gallery-card-info text-white">
+                        <p class="text-[10px] tracking-[2px] font-medium opacity-80 mb-1">SIGNATURE</p>
+                        <h3 class="font-display text-2xl">Chee Tah</h3>
+                        <p class="text-sm opacity-75 mt-1">Warm golds & rich skin tones</p>
+                    </div>
                 </div>
-                <div class="relative">
-                    <img src="https://picsum.photos/id/160/1200/750" alt="After" class="big-image border border-zinc-200">
-                    <div class="image-label after-label">AFTER</div>
+
+                <div class="gallery-card aspect-[4/5] fade-up stagger-2" data-lightbox="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=800&q=80" alt="Temple Heritage preset" class="w-full h-full object-cover">
+                    <div class="gallery-card-overlay"></div>
+                    <div class="gallery-card-info text-white">
+                        <p class="text-[10px] tracking-[2px] font-medium opacity-80 mb-1">HERITAGE</p>
+                        <h3 class="font-display text-2xl">Temple Heritage</h3>
+                        <p class="text-sm opacity-75 mt-1">Deep maroons & sacred warmth</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card aspect-[4/5] fade-up stagger-3" data-lightbox="https://images.unsplash.com/photo-1465495976277-744d335ea0f4?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1465495976277-744d335ea0f4?w=800&q=80" alt="Ivory and Glow preset" class="w-full h-full object-cover">
+                    <div class="gallery-card-overlay"></div>
+                    <div class="gallery-card-info text-white">
+                        <p class="text-[10px] tracking-[2px] font-medium opacity-80 mb-1">BRIDAL</p>
+                        <h3 class="font-display text-2xl">Ivory & Glow</h3>
+                        <p class="text-sm opacity-75 mt-1">Soft luminance & pearl highlights</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card aspect-[4/5] fade-up stagger-1" data-lightbox="https://images.unsplash.com/photo-1522673606300-8d3bfc83e37b?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1522673606300-8d3bfc83e37b?w=800&q=80" alt="Reception Nights preset" class="w-full h-full object-cover">
+                    <div class="gallery-card-overlay"></div>
+                    <div class="gallery-card-info text-white">
+                        <p class="text-[10px] tracking-[2px] font-medium opacity-80 mb-1">EVENING</p>
+                        <h3 class="font-display text-2xl">Reception Nights</h3>
+                        <p class="text-sm opacity-75 mt-1">Moody ambience & cinematic depth</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card aspect-[4/5] fade-up stagger-2" data-lightbox="https://images.unsplash.com/photo-1520854221256-17451b1c6264?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1520854221256-17451b1c6264?w=800&q=80" alt="Mehendi Moments preset" class="w-full h-full object-cover">
+                    <div class="gallery-card-overlay"></div>
+                    <div class="gallery-card-info text-white">
+                        <p class="text-[10px] tracking-[2px] font-medium opacity-80 mb-1">PRE-WEDDING</p>
+                        <h3 class="font-display text-2xl">Mehendi Moments</h3>
+                        <p class="text-sm opacity-75 mt-1">Vibrant greens & golden hour</p>
+                    </div>
+                </div>
+
+                <div class="gallery-card aspect-[4/5] fade-up stagger-3" data-lightbox="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&q=80" alt="Classic Film preset" class="w-full h-full object-cover">
+                    <div class="gallery-card-overlay"></div>
+                    <div class="gallery-card-info text-white">
+                        <p class="text-[10px] tracking-[2px] font-medium opacity-80 mb-1">FILM</p>
+                        <h3 class="font-display text-2xl">Classic Film</h3>
+                        <p class="text-sm opacity-75 mt-1">Timeless grain & muted elegance</p>
+                    </div>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- Pack 3 -->
-        <div class="pair">
-            <div class="mb-3 flex items-center justify-between">
-                <span class="gt-style text-sm tracking-[1px] text-zinc-400">IVORY & GLOW</span>
+    <!-- Before & After -->
+    <section id="before-after" class="py-24 md:py-32">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-12 fade-up">
+                <p class="section-label mb-3">See the Difference</p>
+                <h2 class="font-display text-4xl md:text-5xl font-medium">Before & After</h2>
+                <p class="mt-4 text-[var(--muted)] text-sm max-w-md mx-auto">
+                    Drag the slider to compare raw captures with H.O.T.C colour grading.
+                </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="relative">
-                    <img src="https://picsum.photos/id/201/1200/750" alt="Before" class="big-image border border-zinc-200">
-                    <div class="image-label before-label">BEFORE</div>
+
+            <!-- Pack tabs -->
+            <div class="flex justify-center gap-8 mb-10 fade-up">
+                <button class="pack-tab active text-sm text-[var(--muted)] pb-2" data-pack="cheetah">Chee Tah</button>
+                <button class="pack-tab text-sm text-[var(--muted)] pb-2" data-pack="temple">Temple Heritage</button>
+                <button class="pack-tab text-sm text-[var(--muted)] pb-2" data-pack="ivory">Ivory & Glow</button>
+            </div>
+
+            <!-- Chee Tah -->
+            <div class="pack-panel active fade-up" data-pack="cheetah">
+                <div class="ba-container aspect-[16/10]" data-before="https://images.unsplash.com/photo-1606800052052-a08af8348861?w=1400&q=80" data-after="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1400&q=80">
+                    <img src="https://images.unsplash.com/photo-1606800052052-a08af8348861?w=1400&q=80" alt="Before — Chee Tah" class="w-full h-full object-cover">
+                    <div class="ba-after" style="width: 50%;">
+                        <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1400&q=80" alt="After — Chee Tah">
+                    </div>
+                    <div class="ba-handle" style="left: 50%;">
+                        <span class="ba-handle-icon">◂ ▸</span>
+                    </div>
+                    <span class="ba-label ba-label-before">BEFORE</span>
+                    <span class="ba-label ba-label-after">AFTER</span>
                 </div>
-                <div class="relative">
-                    <img src="https://picsum.photos/id/251/1200/750" alt="After" class="big-image border border-zinc-200">
-                    <div class="image-label after-label">AFTER</div>
+            </div>
+
+            <!-- Temple Heritage -->
+            <div class="pack-panel fade-up" data-pack="temple">
+                <div class="ba-container aspect-[16/10]" data-before="https://images.unsplash.com/photo-1583939002239-df237576b45e?w=1400&q=80" data-after="https://images.unsplash.com/photo-1519741497674-611481863552?w=1400&q=80">
+                    <img src="https://images.unsplash.com/photo-1583939002239-df237576b45e?w=1400&q=80" alt="Before — Temple Heritage" class="w-full h-full object-cover">
+                    <div class="ba-after" style="width: 50%;">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=1400&q=80" alt="After — Temple Heritage">
+                    </div>
+                    <div class="ba-handle" style="left: 50%;">
+                        <span class="ba-handle-icon">◂ ▸</span>
+                    </div>
+                    <span class="ba-label ba-label-before">BEFORE</span>
+                    <span class="ba-label ba-label-after">AFTER</span>
+                </div>
+            </div>
+
+            <!-- Ivory & Glow -->
+            <div class="pack-panel fade-up" data-pack="ivory">
+                <div class="ba-container aspect-[16/10]" data-before="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1400&q=80" data-after="https://images.unsplash.com/photo-1465495976277-744d335ea0f4?w=1400&q=80">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1400&q=80" alt="Before — Ivory & Glow" class="w-full h-full object-cover">
+                    <div class="ba-after" style="width: 50%;">
+                        <img src="https://images.unsplash.com/photo-1465495976277-744d335ea0f4?w=1400&q=80" alt="After — Ivory & Glow">
+                    </div>
+                    <div class="ba-handle" style="left: 50%;">
+                        <span class="ba-handle-icon">◂ ▸</span>
+                    </div>
+                    <span class="ba-label ba-label-before">BEFORE</span>
+                    <span class="ba-label ba-label-after">AFTER</span>
                 </div>
             </div>
         </div>
+    </section>
 
+    <!-- Gallery Masonry -->
+    <section id="gallery" class="py-24 md:py-32 bg-[var(--charcoal)]">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 fade-up">
+                <p class="section-label mb-3 text-white/50">Portfolio</p>
+                <h2 class="font-display text-4xl md:text-5xl font-medium text-white">Graded with Presetz</h2>
+            </div>
+
+            <div class="masonry fade-up">
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=600&q=80" alt="Wedding ceremony" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1522673606300-8d3bfc83e37b?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1522673606300-8d3bfc83e37b?w=600&q=80" alt="Couple portrait" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=600&q=80" alt="Wedding details" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1520854221256-17451b1c6264?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1520854221256-17451b1c6264?w=600&q=80" alt="Celebration" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1583939002239-df237576b45e?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1583939002239-df237576b45e?w=600&q=80" alt="Traditional ceremony" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1606800052052-a08af8348861?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1606800052052-a08af8348861?w=600&q=80" alt="Bridal portrait" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Couple outdoors" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1465495976277-744d335ea0f4?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1465495976277-744d335ea0f4?w=600&q=80" alt="Bridal elegance" loading="lazy">
+                </div>
+                <div class="masonry-item" data-lightbox="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&q=80">
+                    <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=600&q=80" alt="Wedding venue" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="py-24 md:py-32">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="fade-up">
+                    <p class="section-label mb-3">About Presetz</p>
+                    <h2 class="font-display text-4xl md:text-5xl font-medium leading-tight">
+                        Built for photographers who honour tradition
+                    </h2>
+                    <p class="mt-6 text-[var(--muted)] leading-relaxed">
+                        Presetz is the premium preset line from Colour Store — crafted specifically for South Indian wedding photographers. Our H.O.T.C colour systems preserve the warmth of silk sarees, the glow of temple lamps, and the richness of celebration without losing authentic skin tones.
+                    </p>
+                    <p class="mt-4 text-[var(--muted)] leading-relaxed">
+                        Each pack is tested across hundreds of real weddings — from morning ceremonies to midnight receptions — so you can deliver consistent, breathtaking galleries every time.
+                    </p>
+                    <a href="https://www.colourstorepresets.com" target="_blank" rel="noopener"
+                       class="inline-block mt-8 text-xs tracking-[2px] font-medium px-8 py-3.5 bg-[var(--charcoal)] text-white hover:bg-[var(--charcoal)]/90 transition-colors">
+                        EXPLORE ALL PRESETS
+                    </a>
+                </div>
+                <div class="fade-up stagger-2">
+                    <div class="grid grid-cols-2 gap-4">
+                        <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=500&q=80" alt="Preset sample 1" class="w-full aspect-[3/4] object-cover" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=500&q=80" alt="Preset sample 2" class="w-full aspect-[3/4] object-cover mt-8" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-20 bg-[var(--cream)]">
+        <div class="max-w-3xl mx-auto px-6 text-center fade-up">
+            <h2 class="font-display text-3xl md:text-4xl font-medium">Ready to transform your workflow?</h2>
+            <p class="mt-4 text-[var(--muted)] text-sm">
+                Join thousands of wedding photographers using Colour Store presets.
+            </p>
+            <a href="https://www.colourstorepresets.com" target="_blank" rel="noopener"
+               class="inline-block mt-8 text-xs tracking-[2px] font-medium px-10 py-4 bg-[var(--gold)] text-[var(--charcoal)] hover:bg-[var(--gold-light)] transition-colors">
+                SHOP AT COLOUR STORE
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 border-t border-black/5">
+        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="text-center md:text-left">
+                <p class="font-display text-xl">Presetz</p>
+                <p class="text-xs text-[var(--muted)] mt-1 tracking-wide">Part of the Colour Store ecosystem</p>
+            </div>
+            <div class="flex gap-8">
+                <a href="#collections" class="text-xs tracking-[1.5px] text-[var(--muted)] hover:text-[var(--charcoal)] transition-colors">Collections</a>
+                <a href="#before-after" class="text-xs tracking-[1.5px] text-[var(--muted)] hover:text-[var(--charcoal)] transition-colors">Before & After</a>
+                <a href="https://www.colourstorepresets.com" target="_blank" rel="noopener" class="text-xs tracking-[1.5px] text-[var(--muted)] hover:text-[var(--charcoal)] transition-colors">Colour Store</a>
+            </div>
+            <p class="text-[10px] text-[var(--muted)] tracking-widest">© 2026 PRESETZ · H.O.T.C COLOURS</p>
+        </div>
+    </footer>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" role="dialog" aria-label="Image viewer">
+        <button class="lightbox-close" aria-label="Close">×</button>
+        <img id="lightboxImg" src="" alt="">
     </div>
 
-    <!-- Minimal Footer Note -->
-    <div class="max-w-5xl mx-auto px-6 pb-12 text-center">
-        <p class="text-[10px] text-zinc-400 tracking-widest">Replace placeholders with your real before & after images • Colour Store H.O.T.C Colours</p>
-    </div>
+    <script>
+        // Nav scroll behavior
+        const navbar = document.getElementById('navbar');
+        const hero = document.querySelector('.hero');
 
+        function updateNav() {
+            const heroBottom = hero.offsetHeight;
+            if (window.scrollY > heroBottom - 80) {
+                navbar.classList.add('scrolled');
+                navbar.classList.remove('hero-nav');
+            } else {
+                navbar.classList.remove('scrolled');
+                navbar.classList.add('hero-nav');
+            }
+        }
+
+        window.addEventListener('scroll', updateNav, { passive: true });
+        updateNav();
+
+        // Mobile menu
+        const menuBtn = document.getElementById('menuBtn');
+        const menuClose = document.getElementById('menuClose');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+        menuClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.remove('open'));
+        });
+
+        // Fade-in on scroll
+        const fadeEls = document.querySelectorAll('.fade-up');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+        fadeEls.forEach(el => observer.observe(el));
+
+        // Trigger hero animations immediately
+        document.querySelectorAll('.hero .fade-up').forEach(el => {
+            setTimeout(() => el.classList.add('visible'), 200);
+        });
+
+        // Pack tabs
+        const packTabs = document.querySelectorAll('.pack-tab');
+        const packPanels = document.querySelectorAll('.pack-panel');
+
+        packTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const pack = tab.dataset.pack;
+                packTabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                packPanels.forEach(p => {
+                    p.classList.toggle('active', p.dataset.pack === pack);
+                });
+            });
+        });
+
+        // Before/After sliders
+        document.querySelectorAll('.ba-container').forEach(container => {
+            const afterLayer = container.querySelector('.ba-after');
+            const handle = container.querySelector('.ba-handle');
+            const afterImg = afterLayer.querySelector('img');
+            let dragging = false;
+
+            function setPosition(x) {
+                const rect = container.getBoundingClientRect();
+                let pct = ((x - rect.left) / rect.width) * 100;
+                pct = Math.max(2, Math.min(98, pct));
+                afterLayer.style.width = pct + '%';
+                handle.style.left = pct + '%';
+            }
+
+            function syncAfterImageWidth() {
+                afterImg.style.width = container.offsetWidth + 'px';
+            }
+
+            syncAfterImageWidth();
+            window.addEventListener('resize', syncAfterImageWidth);
+
+            container.addEventListener('mousedown', (e) => { dragging = true; setPosition(e.clientX); });
+            container.addEventListener('touchstart', (e) => { dragging = true; setPosition(e.touches[0].clientX); }, { passive: true });
+
+            window.addEventListener('mousemove', (e) => { if (dragging) setPosition(e.clientX); });
+            window.addEventListener('touchmove', (e) => { if (dragging) setPosition(e.touches[0].clientX); }, { passive: true });
+
+            window.addEventListener('mouseup', () => dragging = false);
+            window.addEventListener('touchend', () => dragging = false);
+
+            container.addEventListener('click', (e) => setPosition(e.clientX));
+        });
+
+        // Lightbox
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+
+        document.querySelectorAll('[data-lightbox]').forEach(el => {
+            el.addEventListener('click', () => {
+                lightboxImg.src = el.dataset.lightbox;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+    </script>
 </body>
 </html>
